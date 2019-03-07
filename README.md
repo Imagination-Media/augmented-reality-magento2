@@ -15,11 +15,12 @@ With this new Magento 2 integration you will be able to add usdz files as produc
 [![backend.gif](https://s2.gifyu.com/images/backend.gif)](https://gifyu.com/image/39D3)
 
 **Frontend demo:**
-[![frontend.gif](https://s2.gifyu.com/images/frontend.gif)](https://gifyu.com/image/39D9)
+https://gifyu.com/image/39D
 
 ### Demo Links:
 These are 2 demo links available at the moment. It runs only on iOs 12 devices using Safari browser (Apple ARKit requirements). This demo website is running with limited resources, so maybe it can run slow.
 Guitar -> https://m2sandbox.imaginationmedia.com/stratocaster-guitar.html
+
 Chair -> https://m2sandbox.imaginationmedia.com/chair.html
 
 ### Development
