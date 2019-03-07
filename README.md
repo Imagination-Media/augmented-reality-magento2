@@ -19,6 +19,7 @@ https://gifyu.com/image/39D
 
 ### Demo Links:
 These are 2 demo links available at the moment. It runs only on iOs 12 devices using Safari browser (Apple ARKit requirements). This demo website is running with limited resources, so maybe it can run slow.
+
 Guitar -> https://m2sandbox.imaginationmedia.com/stratocaster-guitar.html
 
 Chair -> https://m2sandbox.imaginationmedia.com/chair.html
