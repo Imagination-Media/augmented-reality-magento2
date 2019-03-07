@@ -11,11 +11,11 @@ Apple ARKit makes easy to bring the augmented reality experience to the iOs 12 u
 **Magento 2 integration**
 With this new Magento 2 integration you will be able to add usdz files as product media content, and using few steps you will be able to offer a full AR experience to your Magento 2 customers.
 
-**Backend demo:**
-[![backend.gif](https://s2.gifyu.com/images/backend.gif)](https://gifyu.com/image/39D3)
+**Backend demo: (https://gifyu.com/image/39D3)**
+![backend.gif](https://s2.gifyu.com/images/backend.gif)
 
-**Frontend demo:**
-https://gifyu.com/image/39D
+**Frontend demo: (https://gifyu.com/image/39D9)**
+![frontend.gif](https://s2.gifyu.com/images/frontend.gif)
 
 ### Demo Links:
 These are 2 demo links available at the moment. It runs only on iOs 12 devices using Safari browser (Apple ARKit requirements). This demo website is running with limited resources, so maybe it can run slow.
