@@ -1,0 +1,131 @@
+<?php
+
+/**
+ * Aero
+ *
+ * Add augmented reality to Magento using Adobe Aero and Apple ArKit.
+ *
+ * @package ImaginationMedia\Aero
+ * @author Igor Ludgero Miura <igor@imaginationmedia.com>
+ * @copyright Copyright (c) 2019 Imagination Media (https://www.imaginationmedia.com/)
+ * @license https://opensource.org/licenses/OSL-3.0.php Open Software License 3.0
+ */
+
+/* @var ImaginationMedia\Aero\Block\Adminhtml\Product\Edit\NewAugmentedReality $block */
+?>
+<div id="new-ar" style="display:none;">
+    <?= /* @escapeNotVerified */
+    $block->getFormHtml() ?>
+    <div class="preview-image" id="preview-ar-box" style="text-align: center;;">
+        <a href="<?= $block->getArFileUrl() ?>" rel="ar" id="img-ar-file">
+            <img src="<?= $block->getPreviewArUrl() ?>" id="img-ar-preview-file" style="max-width: 180px;">
+        </a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'Magento_Ui/js/modal/alert',
+            'mage/loader',
+            'jquery/ui',
+            'mage/translate'
+        ],
+        function (
+            $,
+            modal,
+            alert,
+            loader
+        ) {
+            const ids = {
+                ar_file : "img-ar-file",
+                ar_preview_file : "img-ar-preview-file",
+                ar_preview_box : "preview-ar-box",
+                input_ar_file : "ar_file",
+                input_ar_preview_file : "ar_preview_file"
+            };
+            var options = {
+                'type': 'popup',
+                'title': 'Augmented Reality',
+                'modalClass': 'new_ar',
+                'responsive': true,
+                'innerScroll': true,
+                'buttons': [
+                    {
+                        text: $.mage.__('Save'),
+                        class: 'action-primary',
+                        click: function () {
+                            var arFile = document.getElementById(ids.input_ar_file);
+                            var arPreviewFile = document.getElementById(ids.input_ar_preview_file);
+                            var arFileValue = arFile.files;
+                            var arPreviewFileValue = arPreviewFile.files;
+                            if (arFileValue.length > 0 || arPreviewFileValue.length > 0) {
+                                var formData = new FormData();
+                                if (arFileValue.length > 0 && !arFileValue[0].name.includes("usdz")) {
+                                    alert({
+                                        title: $.mage.__('Error'),
+                                        content: $.mage.__('Invalid AR file, only .usdz is accepted.')
+                                    });
+                                    return;
+                                } else if (arFileValue.length > 0) {
+                                    formData.append('ar_file', arFileValue[0], arFileValue[0].name);
+                                }
+                                if (arPreviewFileValue.length > 0 && !arPreviewFileValue[0].type.match('image.*')) {
+                                    alert({
+                                        title: $.mage.__('Error'),
+                                        content: $.mage.__('Invalid image file.')
+                                    });
+                                    return;
+                                } else if (arPreviewFileValue.length > 0) {
+                                    formData.append('ar_preview_file', arPreviewFileValue[0], arPreviewFileValue[0].name);
+                                }
+                                $('body').trigger('processStart');
+
+                                //Add form key
+                                if (window.FORM_KEY) {
+                                    formData.append("form_key", window.FORM_KEY);
+                                }
+
+                                //Add product id
+                                formData.append("product_id", "<?= $block->getProduct()->getId() ?>");
+
+                                var controllerUrl = "<?= $block->getControllerUrl() ?>";
+                                $.ajax({
+                                    url : controllerUrl,
+                                    type : 'POST',
+                                    data : formData,
+                                    processData: false,
+                                    contentType: false,
+                                    success : function(data) {
+                                        $('body').trigger('processStop');
+                                        alert({
+                                            title: $.mage.__('Success'),
+                                            content: $.mage.__('AR file successfully updated.'),
+                                            actions: {
+                                                always: function(){
+                                                    location.reload();
+                                                }
+                                            }
+                                        });
+                                    },
+                                    error: function (request, status, error) {
+                                        $('body').trigger('processStop');
+                                    },
+                                    async: true
+                                });
+                            }
+                        }
+                    }
+                ]
+            };
+            $(document).ready(function () {
+                document.getElementById('add_ar_button').onclick = function () {
+                    var popup = modal(options, $('#new-ar'));
+                    $("#new-ar").modal("openModal");
+                };
+            });
+        }
+    );
+</script>

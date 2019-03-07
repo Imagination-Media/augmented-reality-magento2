@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Aero
+ *
+ * Add augmented reality to Magento using Adobe Aero and Apple ArKit.
+ *
+ * @package ImaginationMedia\Aero
+ * @author Igor Ludgero Miura <igor@imaginationmedia.com>
+ * @copyright Copyright (c) 2019 Imagination Media (https://www.imaginationmedia.com/)
+ * @license https://opensource.org/licenses/OSL-3.0.php Open Software License 3.0
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product.info.media">
+            <block class="ImaginationMedia\Aero\Block\Product\View\AugmentedReality" name="product.info.augmented.reality"
+                   after="product.info.media.video" template="ImaginationMedia_Aero::product/view/ar.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

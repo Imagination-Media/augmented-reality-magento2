@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * Aero
+ *
+ * Add augmented reality to Magento using Adobe Aero and Apple ArKit.
+ *
+ * @package ImaginationMedia\Aero
+ * @author Igor Ludgero Miura <igor@imaginationmedia.com>
+ * @copyright Copyright (c) 2019 Imagination Media (https://www.imaginationmedia.com/)
+ * @license https://opensource.org/licenses/OSL-3.0.php Open Software License 3.0
+ */
+
+/**
+ * @var $this \ImaginationMedia\Aero\Block\Product\View\AugmentedReality
+ */
+
+if ($this->hasAugmentedFile()) : ?>
+    <div class="augmented-reality" id="augmented-reality" style="display: none;">
+        <p><strong><?= __('Test it using Augmented Reality:') ?></strong></p>
+        <p>
+            <a href="<?= $this->getArFileUrl() ?>" rel="ar" id="img-ar-file">
+                <img src="<?= $this->getPreviewArUrl() ?>" id="img-ar-preview-file" style="max-width: 140px;">
+            </a>
+        </p>
+    </div>
+    <script>
+        function iOSversion() {
+            if (/iP(hone|od|ad)/.test(navigator.platform)) {
+                // supports iOS 2.0 and later: <https://bit.ly/TJjs1V>
+                var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+                return parseInt(v[1], 10);
+            }
+        }
+
+        function isSafari() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.indexOf('safari') != -1) {
+                if (ua.indexOf('chrome') > -1) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        var version = iOSversion();
+        if (version !== undefined) {
+            if (version >= 12 && isSafari()) {
+                document.getElementById("augmented-reality").style.display = "block";
+            }
+        }
+    </script>
+<?php endif; ?>
