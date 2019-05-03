@@ -18,16 +18,15 @@
 if ($this->hasAugmentedFile()) : ?>
     <div class="augmented-reality" id="augmented-reality" style="display: none;">
         <p><strong><?= __('Test it using Augmented Reality:') ?></strong></p>
-        <p>
-            <a href="<?= $this->getArFileUrl() ?>" rel="ar" id="img-ar-file">
-                <img src="<?= $this->getPreviewArUrl() ?>" id="img-ar-preview-file" style="max-width: 140px;">
+        <p class="content">
+            <a href="#" rel="ar" id="img-ar-file">
+                <img src="#" id="img-ar-preview-file" style="max-width: 140px;">
             </a>
         </p>
     </div>
     <script>
         function iOSversion() {
             if (/iP(hone|od|ad)/.test(navigator.platform)) {
-                // supports iOS 2.0 and later: <https://bit.ly/TJjs1V>
                 var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
                 return parseInt(v[1], 10);
             }
@@ -45,10 +44,22 @@ if ($this->hasAugmentedFile()) : ?>
         }
 
         var version = iOSversion();
-        if (version !== undefined) {
-            if (version >= 12 && isSafari()) {
-                document.getElementById("augmented-reality").style.display = "block";
-            }
+        if (version !== undefined && version >= 12 && isSafari()) {
+            var ajax = new XMLHttpRequest();
+            ajax.open("POST", "<?= $this->getPostUrl() ?>", true);
+            ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            ajax.send("product_id=<?= $this->getProductId() ?>");
+            ajax.onreadystatechange = function() {
+                if (ajax.readyState === 4 && ajax.status === 200) {
+                    var data = ajax.responseText;
+                    data = JSON.parse(data);
+                    if (data.has_ar === 1) {
+                        document.getElementById("img-ar-file").href = data.ar;
+                        document.getElementById("img-ar-preview-file").src = data.preview;
+                        document.getElementById("augmented-reality").style.display = "block";
+                    }
+                }
+            };
         }
     </script>
 <?php endif; ?>

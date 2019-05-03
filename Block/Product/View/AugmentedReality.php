@@ -25,7 +25,6 @@ use Magento\Framework\Locale\FormatInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\StringUtils;
 use Magento\Framework\Url\EncoderInterface;
-use Magento\Framework\UrlInterface;
 
 class AugmentedReality extends View
 {
@@ -90,36 +89,20 @@ class AugmentedReality extends View
     }
 
     /**
-     * Get preview path
+     * Get controller url
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getPreviewArUrl() : string
+    public function getPostUrl() : string
     {
-        $productId = $this->getProduct()->getId();
-        $arData = $this->augmentedRealityRepo->getArByProduct($productId);
-        if (key_exists("preview_path", $arData) &&
-            (string)$arData["preview_path"] !== "") {
-            return $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . "catalog/product/ar/" .
-                $arData["preview_path"];
-        }
-        return "";
+        return $this->getUrl("aero/aero/index");
     }
 
     /**
-     * Get AR file path
-     * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * Get current product id
+     * @return int
      */
-    public function getArFileUrl() : string
+    public function getProductId() : int
     {
-        $productId = $this->getProduct()->getId();
-        $arData = $this->augmentedRealityRepo->getArByProduct($productId);
-        if (key_exists("ar_path", $arData) &&
-            (string)$arData["ar_path"] !== "") {
-            return $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . "catalog/product/ar/" .
-                $arData["ar_path"];
-        }
-        return "";
+        return (int)$this->getProduct()->getId();
     }
 }
