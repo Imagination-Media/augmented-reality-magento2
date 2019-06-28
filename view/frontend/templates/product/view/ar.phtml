@@ -25,41 +25,40 @@ if ($this->hasAugmentedFile()) : ?>
         </p>
     </div>
     <script>
-        function iOSversion() {
-            if (/iP(hone|od|ad)/.test(navigator.platform)) {
-                var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
-                return parseInt(v[1], 10);
-            }
-        }
-
-        function isSafari() {
-            var ua = navigator.userAgent.toLowerCase();
-            if (ua.indexOf('safari') != -1) {
-                if (ua.indexOf('chrome') > -1) {
-                    return false;
-                } else {
-                    return true;
+        require(["jquery"], function($){
+            function iOSversion() {
+                if (/iP(hone|od|ad)/.test(navigator.platform)) {
+                    var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+                    return parseInt(v[1], 10);
                 }
             }
-        }
 
-        var version = iOSversion();
-        if (version !== undefined && version >= 12 && isSafari()) {
-            var ajax = new XMLHttpRequest();
-            ajax.open("POST", "<?= $this->getPostUrl() ?>", true);
-            ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            ajax.send("product_id=<?= $this->getProductId() ?>");
-            ajax.onreadystatechange = function() {
-                if (ajax.readyState === 4 && ajax.status === 200) {
-                    var data = ajax.responseText;
-                    data = JSON.parse(data);
+            function isSafari() {
+                var ua = navigator.userAgent.toLowerCase();
+                if (ua.indexOf('safari') != -1) {
+                    if (ua.indexOf('chrome') > -1) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+
+            if (isSafari() && iOSversion()) {
+                var request = jQuery.ajax({
+                    url: "<?= $this->getPostUrl() ?>",
+                    type: "POST",
+                    data: {product_id: "<?= $this->getProductId() ?>"}
+                });
+
+                request.done(function (data) {
                     if (data.has_ar === 1) {
                         document.getElementById("img-ar-file").href = data.ar;
                         document.getElementById("img-ar-preview-file").src = data.preview;
                         document.getElementById("augmented-reality").style.display = "block";
                     }
-                }
-            };
-        }
+                });
+            }
+        });
     </script>
 <?php endif; ?>
